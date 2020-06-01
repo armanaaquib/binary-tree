@@ -15,3 +15,17 @@ const insert = (tree, value) => {
 
   return tree;
 };
+
+const search = (root, searchKey) => {
+  if (root === null || root.value === searchKey) {
+    return root;
+  }
+
+  if (searchKey < root.value) {
+    return search(root.left, searchKey);
+  }
+
+  return search(root.right, searchKey);
+};
+
+module.exports = { insert, search };
