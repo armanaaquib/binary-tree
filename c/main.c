@@ -47,4 +47,15 @@ int main(void)
 
   printf("\nPost Order:\n");
   post_order_traversal(binary_search_tree, int_displayer);
+
+  binary_search_tree = reduce_ints_to_head(insert, NULL, cmp_int, values, 7);
+
+  printf("\nIn Order:\n");
+  in_order_traversal(binary_search_tree, int_displayer);
+
+  printf("\nPre Order:\n");
+  pre_order_traversal(binary_search_tree, int_displayer);
+
+  printf("\nPost Order:\n");
+  post_order_traversal(binary_search_tree, int_displayer);
 }

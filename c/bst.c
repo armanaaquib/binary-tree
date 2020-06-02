@@ -32,3 +32,24 @@ Node_ptr insert_rec(Node_ptr node, Value value, Matcher matcher)
 
   return node;
 }
+
+Node_ptr insert(Node_ptr head, Value value, Matcher matcher)
+{
+  Node_ptr *leaf_node_ptr = &head;
+
+  while (*leaf_node_ptr != NULL)
+  {
+    if ((*matcher)(value, (*leaf_node_ptr)->value) < 0)
+    {
+      leaf_node_ptr = &((*leaf_node_ptr)->left);
+    }
+    else
+    {
+      leaf_node_ptr = &((*leaf_node_ptr)->right);
+    }
+  }
+
+  *leaf_node_ptr = create_node(value);
+
+  return head;
+}
