@@ -1,31 +1,31 @@
-const inOrderTraverse = (tree) => {
+const inOrderTraversal = (tree) => {
   if (tree == null) {
     return;
   }
 
-  inOrderTraverse(tree.left);
+  inOrderTraversal(tree.left);
   console.log(tree.value);
-  inOrderTraverse(tree.right);
+  inOrderTraversal(tree.right);
 };
 
-const preOrderTraverse = (tree) => {
+const preOrderTraversal = (tree) => {
   if (tree == null) {
     return;
   }
 
   console.log(tree.value);
-  preOrderTraverse(tree.left);
-  preOrderTraverse(tree.right);
+  preOrderTraversal(tree.left);
+  preOrderTraversal(tree.right);
 };
 
-const postOrderTraverse = (tree) => {
+const postOrderTraversal = (tree) => {
   if (tree == null) {
     return;
   }
 
-  postOrderTraverse(tree.left);
-  postOrderTraverse(tree.right);
+  postOrderTraversal(tree.left);
+  postOrderTraversal(tree.right);
   console.log(tree.value);
 };
 
-module.exports = { inOrderTraverse, preOrderTraverse, postOrderTraverse };
+module.exports = { inOrderTraversal, preOrderTraversal, postOrderTraversal };
