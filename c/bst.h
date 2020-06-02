@@ -5,5 +5,6 @@
 
 Node_ptr insert_rec(Node_ptr, Value, Matcher);
 Node_ptr insert(Node_ptr, Value, Matcher);
+Node_ptr search(Node_ptr, Value, Matcher);
 
 #endif

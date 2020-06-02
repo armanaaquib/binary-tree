@@ -35,21 +35,45 @@ Node_ptr insert_rec(Node_ptr node, Value value, Matcher matcher)
 
 Node_ptr insert(Node_ptr head, Value value, Matcher matcher)
 {
-  Node_ptr *leaf_node_ptr = &head;
+  Node_ptr *ptr_to_p_walk = &head;
 
-  while (*leaf_node_ptr != NULL)
+  while (*ptr_to_p_walk != NULL)
   {
-    if ((*matcher)(value, (*leaf_node_ptr)->value) < 0)
+    if ((*matcher)(value, (*ptr_to_p_walk)->value) < 0)
     {
-      leaf_node_ptr = &((*leaf_node_ptr)->left);
+      ptr_to_p_walk = &((*ptr_to_p_walk)->left);
     }
     else
     {
-      leaf_node_ptr = &((*leaf_node_ptr)->right);
+      ptr_to_p_walk = &((*ptr_to_p_walk)->right);
     }
   }
 
-  *leaf_node_ptr = create_node(value);
+  *ptr_to_p_walk = create_node(value);
 
   return head;
+}
+
+Node_ptr search(Node_ptr head, Value searchValue, Matcher matcher)
+{
+  Node_ptr p_walk = head;
+
+  while (p_walk != NULL)
+  {
+    if ((*matcher)(searchValue, p_walk->value) == 0)
+    {
+      return p_walk;
+    }
+
+    if ((*matcher)(searchValue, p_walk->value) < 0)
+    {
+      p_walk = p_walk->left;
+    }
+    else
+    {
+      p_walk = p_walk->right;
+    }
+  }
+
+  return p_walk;
 }
