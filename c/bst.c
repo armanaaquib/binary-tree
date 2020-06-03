@@ -33,9 +33,9 @@ Node_ptr insert_rec(Node_ptr node, Value value, Matcher matcher)
   return node;
 }
 
-Node_ptr insert(Node_ptr head, Value value, Matcher matcher)
+Node_ptr insert(Node_ptr root, Value value, Matcher matcher)
 {
-  Node_ptr *ptr_to_p_walk = &head;
+  Node_ptr *ptr_to_p_walk = &root;
 
   while (*ptr_to_p_walk != NULL)
   {
@@ -51,7 +51,7 @@ Node_ptr insert(Node_ptr head, Value value, Matcher matcher)
 
   *ptr_to_p_walk = create_node(value);
 
-  return head;
+  return root;
 }
 
 Node_ptr search(Node_ptr head, Value searchValue, Matcher matcher)
@@ -77,3 +77,40 @@ Node_ptr search(Node_ptr head, Value searchValue, Matcher matcher)
 
   return p_walk;
 }
+
+Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
+{
+  Node_ptr *current = &root;
+
+  while ((*matcher)(value, (*current)->value) != 0)
+  {
+    if ((*matcher)(value, (*current)->value) < 0)
+    {
+      current = &((*current)->left);
+    }
+    else
+    {
+      current = &((*current)->right);
+    }
+  }
+
+  Node_ptr *right_min = &(*current)->right;
+
+  if (*right_min)
+  {
+    while ((*right_min)->left != NULL)
+    {
+      right_min = &((*right_min)->left);
+    }
+
+    (*right_min)->left = (*current)->left;
+    (*right_min)->right = (*current)->right != *right_min ? (*current)->right : NULL;
+  }
+
+  *current = *right_min;
+  *right_min = NULL;
+
+  free(*current);
+
+  return root;
+};

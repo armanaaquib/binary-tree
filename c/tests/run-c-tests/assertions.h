@@ -8,5 +8,6 @@ typedef int *Int_ptr;
 
 void assert_value_equal(Value, Value, Matcher, Test_ptr);
 void assert_value_null(Value, Test_ptr);
+void assert_tree_equal(Node_ptr, Node_ptr, Matcher, Test_ptr);
 
 #endif

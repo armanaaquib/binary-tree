@@ -25,3 +25,24 @@ void assert_value_null(Value el, Test_ptr test)
     sprintf(test->error, "Value is not null\n");
   }
 }
+
+void assert_tree_equal(Node_ptr head_1, Node_ptr head_2, Matcher matcher, Test_ptr test)
+{
+  if (test->status == False || (!head_1 && !head_2))
+    return;
+
+  if ((!head_1 && head_2) || (head_1 && !head_2))
+  {
+    test->status = False;
+    sprintf(test->error, "size is not equal\n");
+  }
+
+  if ((*matcher)(head_1->value, head_2->value) != 0)
+  {
+    test->status = False;
+    sprintf(test->error, "value is not equal\n");
+  }
+
+  assert_tree_equal(head_1->left, head_2->left, matcher, test);
+  assert_tree_equal(head_1->right, head_2->right, matcher, test);
+}
