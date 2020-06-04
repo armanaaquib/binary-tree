@@ -82,7 +82,7 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
 {
   Node_ptr *current = &root;
 
-  while ((*matcher)(value, (*current)->value) != 0)
+  while (*current && (*matcher)(value, (*current)->value) != 0)
   {
     if ((*matcher)(value, (*current)->value) < 0)
     {
@@ -94,9 +94,15 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
     }
   }
 
+  if (*current == NULL)
+  {
+    return root;
+  }
+
+  Node_ptr node_to_free = *current;
+
   if ((*current)->left == NULL)
   {
-    Node_ptr node_to_free = *current;
     *current = (*current)->right;
     free(node_to_free);
     return root;
@@ -104,7 +110,6 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
 
   if ((*current)->right == NULL)
   {
-    Node_ptr node_to_free = *current;
     *current = (*current)->left;
     free(node_to_free);
     return root;
@@ -118,7 +123,7 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
   }
 
   (*current)->value = (*min_val_node)->value;
-  Node_ptr node_to_free = *min_val_node;
+  node_to_free = *min_val_node;
   *min_val_node = (*min_val_node)->right;
 
   free(node_to_free);
