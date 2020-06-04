@@ -35,26 +35,30 @@ const remove = (root, value) => {
 
   if (value < root.value) {
     root.left = remove(root.left, value);
-  } else if (value > root.value) {
-    root.right = remove(root.right, value);
-  } else {
-    if (root.left == null) {
-      return root.right;
-    }
-
-    if (root.right == null) {
-      return root.left;
-    }
-
-    let minValueNode = root.right;
-    while (minValueNode.left != null) {
-      minValueNode = minValueNode.left;
-    }
-
-    root.value = minValueNode.value;
-    root.right = remove(root.right, minValueNode.value);
+    return root;
   }
 
+  if (value > root.value) {
+    root.right = remove(root.right, value);
+    return root;
+  }
+
+  if (root.left == null) {
+    return root.right;
+  }
+
+  if (root.right == null) {
+    return root.left;
+  }
+
+  let minValueNode = root.right;
+  while (minValueNode.left != null) {
+    minValueNode = minValueNode.left;
+  }
+
+  root.value = minValueNode.value;
+
+  root.right = remove(root.right, minValueNode.value);
   return root;
 };
 
