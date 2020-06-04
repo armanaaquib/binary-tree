@@ -17,6 +17,8 @@ Test_ptr should_remove_root(Test_ptr);
 Test_ptr should_remove_depth_1_node(Test_ptr);
 Test_ptr should_remove_depth_n_1_node(Test_ptr);
 Test_ptr should_remove_leaf_node(Test_ptr);
+Test_ptr should_remove_root_of_single_node_tree(Test_ptr);
+Test_ptr should_remove_single_child_node(Test_ptr);
 
 int cmp_int(Value val_1, Value val_2)
 {
@@ -86,7 +88,6 @@ Test_ptr should_remove_root(Test_ptr test)
   Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 14);
 
   root = remove_node(root, value, cmp_int);
-
   assert_tree_equal(root, exp_root, cmp_int, test);
 
   return test;
@@ -106,7 +107,14 @@ Test_ptr should_remove_depth_1_node(Test_ptr test)
   Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 14);
 
   root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
 
+  *(int *)value = 30;
+
+  int exp_values_1[] = {20, 12, 32, 5, 15, 25, 35, 2, 8, 17, 22, 27, 37};
+  exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values_1, 13);
+
+  root = remove_node(root, value, cmp_int);
   assert_tree_equal(root, exp_root, cmp_int, test);
 
   return test;
@@ -126,7 +134,14 @@ Test_ptr should_remove_depth_n_1_node(Test_ptr test)
   Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 14);
 
   root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
 
+  *(int *)value = 15;
+
+  int exp_values_1[] = {20, 10, 30, 5, 17, 27, 35, 2, 8, 12, 22, 32, 37};
+  exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values_1, 13);
+
+  root = remove_node(root, value, cmp_int);
   assert_tree_equal(root, exp_root, cmp_int, test);
 
   return test;
@@ -146,7 +161,60 @@ Test_ptr should_remove_leaf_node(Test_ptr test)
   Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 14);
 
   root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
 
+  *(int *)value = 27;
+
+  int exp_values_1[] = {20, 10, 30, 5, 15, 25, 35, 2, 8, 17, 22, 32, 37};
+  exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values_1, 13);
+
+  root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_remove_root_of_single_node_tree(Test_ptr test)
+{
+  test->name = "should remove root node of single node tree";
+
+  int values[] = {20};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 1);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 20;
+
+  int exp_values[] = {};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 0);
+
+  root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_remove_single_child_node(Test_ptr test)
+{
+  test->name = "should remove single child node";
+
+  int values[] = {10, 5, 15, 2, 20, 1, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 7);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 5;
+
+  int exp_values[] = {10, 2, 15, 20, 1, 25};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 6);
+
+  root = remove_node(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  *(int *)value = 15;
+
+  int exp_values_1[] = {10, 2, 20, 1, 25};
+  exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values_1, 5);
+
+  root = remove_node(root, value, cmp_int);
   assert_tree_equal(root, exp_root, cmp_int, test);
 
   return test;
@@ -157,9 +225,11 @@ void test_remove_node(TestReport_ptr test_report)
   Test_Func tests[] = {should_remove_root,
                        should_remove_depth_1_node,
                        should_remove_depth_n_1_node,
-                       should_remove_leaf_node};
+                       should_remove_leaf_node,
+                       should_remove_root_of_single_node_tree,
+                       should_remove_single_child_node};
 
-  run_tests("remove_node()", tests, 4, test_report);
+  run_tests("remove_node()", tests, 6, test_report);
 }
 
 int main(void)

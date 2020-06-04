@@ -35,21 +35,21 @@ Node_ptr insert_rec(Node_ptr node, Value value, Matcher matcher)
 
 Node_ptr insert(Node_ptr root, Value value, Matcher matcher)
 {
-  Node_ptr *ptr_to_p_walk = &root;
+  Node_ptr *p_walk = &root;
 
-  while (*ptr_to_p_walk != NULL)
+  while (*p_walk != NULL)
   {
-    if ((*matcher)(value, (*ptr_to_p_walk)->value) < 0)
+    if ((*matcher)(value, (*p_walk)->value) < 0)
     {
-      ptr_to_p_walk = &((*ptr_to_p_walk)->left);
+      p_walk = &((*p_walk)->left);
     }
     else
     {
-      ptr_to_p_walk = &((*ptr_to_p_walk)->right);
+      p_walk = &((*p_walk)->right);
     }
   }
 
-  *ptr_to_p_walk = create_node(value);
+  *p_walk = create_node(value);
 
   return root;
 }
@@ -94,23 +94,36 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
     }
   }
 
-  Node_ptr *right_min = &(*current)->right;
-
-  if (*right_min)
+  if ((*current)->left == NULL)
   {
-    while ((*right_min)->left != NULL)
-    {
-      right_min = &((*right_min)->left);
-    }
-
-    (*right_min)->left = (*current)->left;
-    (*right_min)->right = (*current)->right != *right_min ? (*current)->right : NULL;
+    Node_ptr node_to_free = *current;
+    *current = (*current)->right;
+    free(node_to_free);
+    return root;
   }
 
-  *current = *right_min;
-  *right_min = NULL;
+  if ((*current)->right == NULL)
+  {
+    Node_ptr node_to_free = *current;
+    *current = (*current)->left;
+    free(node_to_free);
+    return root;
+  }
 
-  free(*current);
+  Node_ptr *min_val_node = &(*current)->right;
+
+  while ((*min_val_node)->left != NULL)
+  {
+    min_val_node = &((*min_val_node)->left);
+  }
+
+  Node_ptr rn_min_val_node = (*min_val_node)->right;
+  (*min_val_node)->left = (*current)->left;
+  (*min_val_node)->right = (*current)->right != *min_val_node ? (*current)->right : NULL;
+  Node_ptr node_to_remove = *current;
+  *current = *min_val_node;
+  *min_val_node = rn_min_val_node;
+  free(node_to_remove);
 
   return root;
 };
