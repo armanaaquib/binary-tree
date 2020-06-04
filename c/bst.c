@@ -117,13 +117,11 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
     min_val_node = &((*min_val_node)->left);
   }
 
-  Node_ptr rn_min_val_node = (*min_val_node)->right;
-  (*min_val_node)->left = (*current)->left;
-  (*min_val_node)->right = (*current)->right != *min_val_node ? (*current)->right : NULL;
-  Node_ptr node_to_remove = *current;
-  *current = *min_val_node;
-  *min_val_node = rn_min_val_node;
-  free(node_to_remove);
+  (*current)->value = (*min_val_node)->value;
+  Node_ptr node_to_free = *min_val_node;
+  *min_val_node = (*min_val_node)->right;
+
+  free(node_to_free);
 
   return root;
 };
