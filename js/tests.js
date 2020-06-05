@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { insert, search, remove, rotateLeft } = require('./bst');
+const { insert, search, remove, rotateLeft, rotateRight } = require('./bst');
 
 describe('search()', function () {
   it('should return null value not in bst', function () {
@@ -53,22 +53,45 @@ describe('search()', function () {
 describe('rotateLeft()', function () {
   it('should rotate left', function () {
     let root = [10, 20, 5, 15, 25].reduce(insert, null);
-    root = rotateLeft(root, 20);
+    root = rotateLeft(root);
     const exp_root = [20, 10, 25, 5, 15].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 
   it('should not rotate left if root does not have any right child node', function () {
     let root = [10, 5].reduce(insert, null);
-    root = rotateLeft(root, 20);
+    root = rotateLeft(root);
     const exp_root = [10, 5].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 
   it('should rotate left if root has leaf node as right child node', function () {
     let root = [10, 5, 20].reduce(insert, null);
-    root = rotateLeft(root, 20);
+    root = rotateLeft(root);
     const exp_root = [20, 10, 5].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('rotateRight()', function () {
+  it('should rotate right', function () {
+    let root = [10, 20, 5, 1, 8].reduce(insert, null);
+    root = rotateRight(root);
+    const exp_root = [5, 1, 10, 8, 20].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should not rotate right if root does not have any left child node', function () {
+    let root = [10, 20].reduce(insert, null);
+    root = rotateRight(root);
+    const exp_root = [10, 20].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate right if root has leaf node as left child node', function () {
+    let root = [10, 5, 20].reduce(insert, null);
+    root = rotateRight(root, 20);
+    const exp_root = [5, 10, 20].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 });

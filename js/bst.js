@@ -75,4 +75,17 @@ const rotateLeft = (root) => {
   return rightNode;
 };
 
-module.exports = { insert, search, remove, rotateLeft };
+const rotateRight = (root) => {
+  if (root == null || root.left == null) {
+    return root;
+  }
+
+  const leftNode = root.left;
+
+  root.left = leftNode.right;
+  leftNode.right = root;
+
+  return leftNode;
+};
+
+module.exports = { insert, search, remove, rotateLeft, rotateRight };
