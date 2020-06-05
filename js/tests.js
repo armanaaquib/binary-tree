@@ -6,6 +6,7 @@ const {
   rotateLeft,
   rotateRight,
   rotate,
+  getBalancedTree,
 } = require('./bst');
 
 describe('search()', function () {
@@ -20,7 +21,7 @@ describe('search()', function () {
   });
 });
 
-describe('search()', function () {
+describe('remove()', function () {
   it('should not delete node if value not in bst', function () {
     let root = [10, 20, 5, 8, 1, 15, 25].reduce(insert, null);
     root = remove(root, -1);
@@ -115,6 +116,29 @@ describe('rotate()', function () {
     let root = [10, 20, 5, 15, 25].reduce(insert, null);
     root = rotate(root, root.right);
     const exp_root = [20, 10, 25, 5, 15].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('getBalanceTree()', function () {
+  it('should balance if left depth is even and right depth is 0', function () {
+    let root = [30, 20, 10].reduce(insert, null);
+    root = getBalancedTree(root, root.right);
+    const exp_root = [20, 10, 30].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should balance if left depth is odd and right depth is 0', function () {
+    let root = [4, 3, 2, 1].reduce(insert, null);
+    root = getBalancedTree(root, root.right);
+    const exp_root = [2, 1, 3, 4].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should balance all nodes', function () {
+    let root = [4, 3, 5, 2, 6, 1, 7].reduce(insert, null);
+    root = getBalancedTree(root, root.right);
+    const exp_root = [4, 2, 6, 1, 3, 5, 7].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 });

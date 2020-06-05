@@ -100,4 +100,43 @@ const rotate = (root, pivotNode) => {
   return root;
 };
 
-module.exports = { insert, search, remove, rotateLeft, rotateRight, rotate };
+const buildTree = (nodes, start, end) => {
+  if (start > end) {
+    return null;
+  }
+
+  const mid = Math.floor((start + end) / 2);
+  const node = nodes[mid];
+
+  node.left = buildTree(nodes, start, mid - 1);
+  node.right = buildTree(nodes, mid + 1, end);
+
+  return node;
+};
+
+const storeNodes = (node, nodes) => {
+  if (node == null) {
+    return;
+  }
+
+  storeNodes(node.left, nodes);
+  nodes.push(node);
+  storeNodes(node.right, nodes);
+};
+
+const getBalancedTree = (root) => {
+  const bstNodes = [];
+  storeNodes(root, bstNodes);
+
+  return buildTree(bstNodes, 0, bstNodes.length - 1);
+};
+
+module.exports = {
+  insert,
+  search,
+  remove,
+  rotateLeft,
+  rotateRight,
+  rotate,
+  getBalancedTree,
+};
