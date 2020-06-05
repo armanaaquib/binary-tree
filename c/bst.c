@@ -145,3 +145,18 @@ Node_ptr rotate_left(Node_ptr root)
 
   return right_node;
 }
+
+Node_ptr rotate_right(Node_ptr root)
+{
+  if (root == NULL || root->left == NULL)
+  {
+    return root;
+  }
+
+  Node_ptr left_node = root->left;
+
+  root->left = left_node->right;
+  left_node->right = root;
+
+  return left_node;
+}
