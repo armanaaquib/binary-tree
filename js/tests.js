@@ -1,5 +1,12 @@
 const assert = require('assert');
-const { insert, search, remove, rotateLeft, rotateRight } = require('./bst');
+const {
+  insert,
+  search,
+  remove,
+  rotateLeft,
+  rotateRight,
+  rotate,
+} = require('./bst');
 
 describe('search()', function () {
   it('should return null value not in bst', function () {
@@ -92,6 +99,22 @@ describe('rotateRight()', function () {
     let root = [10, 5, 20].reduce(insert, null);
     root = rotateRight(root, 20);
     const exp_root = [5, 10, 20].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('rotate()', function () {
+  it('should rotate right', function () {
+    let root = [10, 20, 5, 1, 8].reduce(insert, null);
+    root = rotate(root, root.left);
+    const exp_root = [5, 1, 10, 8, 20].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate left', function () {
+    let root = [10, 20, 5, 15, 25].reduce(insert, null);
+    root = rotate(root, root.right);
+    const exp_root = [20, 10, 25, 5, 15].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 });

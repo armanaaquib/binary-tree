@@ -88,4 +88,12 @@ const rotateRight = (root) => {
   return leftNode;
 };
 
-module.exports = { insert, search, remove, rotateLeft, rotateRight };
+const rotate = (root, pivotNode) => {
+  if (root.right == pivotNode) {
+    return rotateLeft(root);
+  }
+
+  return rotateRight(root);
+};
+
+module.exports = { insert, search, remove, rotateLeft, rotateRight, rotate };
