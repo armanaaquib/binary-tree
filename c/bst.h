@@ -9,5 +9,6 @@ Node_ptr search(Node_ptr, Value, Matcher);
 Node_ptr remove_node(Node_ptr, Value, Matcher);
 Node_ptr rotate_left(Node_ptr);
 Node_ptr rotate_right(Node_ptr);
+Node_ptr rotate(Node_ptr, Node_ptr);
 
 #endif

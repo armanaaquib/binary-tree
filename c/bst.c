@@ -160,3 +160,18 @@ Node_ptr rotate_right(Node_ptr root)
 
   return left_node;
 }
+
+Node_ptr rotate(Node_ptr root, Node_ptr pivot_node)
+{
+  if (root->right == pivot_node)
+  {
+    return rotate_left(root);
+  }
+
+  if (root->left == pivot_node)
+  {
+    return rotate_right(root);
+  }
+
+  return root;
+}
