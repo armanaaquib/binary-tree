@@ -20,6 +20,11 @@ Test_ptr should_remove_leaf_node(Test_ptr);
 Test_ptr should_remove_root_of_single_node_tree(Test_ptr);
 Test_ptr should_remove_single_child_node(Test_ptr);
 
+void test_rotate_left(TestReport_ptr);
+Test_ptr should_rotate_left(Test_ptr);
+Test_ptr should_rotate_left_if_root_has_leaf_node_as_right_child(Test_ptr);
+Test_ptr should_not_rotate_left_if_root_not_have_right_child(Test_ptr);
+
 int cmp_int(Value val_1, Value val_2)
 {
   return *(int *)val_1 - *(int *)val_2;
@@ -232,9 +237,66 @@ void test_remove_node(TestReport_ptr test_report)
   run_tests("remove_node()", tests, 6, test_report);
 }
 
+Test_ptr should_rotate_left(Test_ptr test)
+{
+  test->name = "should rotate left";
+
+  int values[] = {10, 20, 5, 15, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  int exp_values[] = {20, 10, 25, 5, 15};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 5);
+
+  root = rotate_left(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_rotate_left_if_root_has_leaf_node_as_right_child(Test_ptr test)
+{
+  test->name = "should rotate left if root has leaf node as right child node";
+
+  int values[] = {10, 5, 20};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 3);
+
+  int exp_values[] = {20, 10, 5};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 3);
+
+  root = rotate_left(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_not_rotate_left_if_root_not_have_right_child(Test_ptr test)
+{
+  test->name = "should not rotate left if root does not have any right child node";
+
+  int values[] = {10, 5};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 2);
+
+  int exp_values[] = {10, 5};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 2);
+
+  root = rotate_left(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+void test_rotate_left(TestReport_ptr test_report)
+{
+  Test_Func tests[] = {should_rotate_left,
+                       should_rotate_left_if_root_has_leaf_node_as_right_child,
+                       should_not_rotate_left_if_root_not_have_right_child};
+
+  run_tests("rotate_left()", tests, 3, test_report);
+}
+
 int main(void)
 {
-  TestSuite_Func test_suites[] = {test_search, test_remove_node};
-  TestReport_ptr test_report = runt_test_suites(test_suites, 2);
+  TestSuite_Func test_suites[] = {test_search, test_remove_node, test_rotate_left};
+  TestReport_ptr test_report = runt_test_suites(test_suites, 3);
   display_report(test_report);
 }

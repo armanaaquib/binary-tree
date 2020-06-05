@@ -130,3 +130,18 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
 
   return root;
 };
+
+Node_ptr rotate_left(Node_ptr root)
+{
+  if (root == NULL || root->right == NULL)
+  {
+    return root;
+  }
+
+  Node_ptr right_node = root->right;
+
+  root->right = right_node->left;
+  right_node->left = root;
+
+  return right_node;
+}
