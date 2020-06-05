@@ -93,7 +93,11 @@ const rotate = (root, pivotNode) => {
     return rotateLeft(root);
   }
 
-  return rotateRight(root);
+  if (root.left == pivotNode) {
+    return rotateRight(root);
+  }
+
+  return root;
 };
 
 module.exports = { insert, search, remove, rotateLeft, rotateRight, rotate };
