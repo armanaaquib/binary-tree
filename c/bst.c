@@ -2,6 +2,9 @@
 #include "bst.h"
 
 Node_ptr create_node(Value value);
+int store_values(Node_ptr node, Value values[], int);
+Node_ptr build_tree(Node_ptr, Value[], int, int);
+int compare_int(Value, Value);
 
 Node_ptr create_node(Value value)
 {
@@ -175,3 +178,48 @@ Node_ptr rotate(Node_ptr root, Node_ptr pivot_node)
 
   return root;
 }
+
+int compare_int(Value val_1, Value val_2)
+{
+  return *(int *)val_1 - *(int *)val_2;
+}
+
+Node_ptr build_tree(Node_ptr node, Value values[], int start, int end)
+{
+  if (start > end)
+  {
+    return node;
+  }
+
+  int mid = (start + end) / 2;
+  Value value = values[mid];
+
+  node = insert(node, value, compare_int);
+
+  node = build_tree(node, values, start, mid - 1);
+  node = build_tree(node, values, mid + 1, end);
+
+  return node;
+};
+
+int store_values(Node_ptr node, Value values[], int i)
+{
+  if (node == NULL)
+  {
+    return i;
+  }
+
+  i = store_values(node->left, values, i);
+  values[i++] = node->value;
+  i = store_values(node->right, values, i);
+
+  return i;
+};
+
+Node_ptr get_balanced_tree(Node_ptr root)
+{
+  Value values[128];
+  int no_of_nodes = store_values(root, values, 0);
+
+  return build_tree(NULL, values, 0, no_of_nodes - 1);
+};

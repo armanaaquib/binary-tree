@@ -34,6 +34,11 @@ void test_rotate(TestReport_ptr);
 Test_ptr should_rotate_root_right(Test_ptr);
 Test_ptr should_rotate_root_left(Test_ptr);
 
+void test_get_balanced_tree(TestReport_ptr);
+Test_ptr should_balance_even_extra_depth_tree(Test_ptr);
+Test_ptr should_balance_odd_extra_depth_tree(Test_ptr);
+Test_ptr should_balance_all_nodes(Test_ptr);
+
 int cmp_int(Value val_1, Value val_2)
 {
   return *(int *)val_1 - *(int *)val_2;
@@ -399,9 +404,71 @@ void test_rotate(TestReport_ptr test_report)
   run_tests("rotate()", tests, 2, test_report);
 }
 
+Test_ptr should_balance_even_extra_depth_tree(Test_ptr test)
+{
+  test->name = "should balance if left depth is even and right depth is 0";
+
+  int values[] = {30, 20, 10};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 3);
+
+  int exp_values[] = {20, 10, 30};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 3);
+
+  root = get_balanced_tree(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_balance_odd_extra_depth_tree(Test_ptr test)
+{
+  test->name = "should balance if left depth is odd and right depth is 0";
+
+  int values[] = {4, 3, 2, 1};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 4);
+
+  int exp_values[] = {2, 1, 3, 4};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 4);
+
+  root = get_balanced_tree(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_balance_all_nodes(Test_ptr test)
+{
+  test->name = "should balance all nodes";
+
+  int values[] = {4, 3, 5, 2, 6, 1, 7};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 7);
+
+  int exp_values[] = {4, 2, 6, 1, 3, 5, 7};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 7);
+
+  root = get_balanced_tree(root);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+void test_get_balanced_tree(TestReport_ptr test_report)
+{
+  Test_Func tests[] = {should_balance_even_extra_depth_tree,
+                       should_balance_odd_extra_depth_tree,
+                       should_balance_all_nodes};
+
+  run_tests("get_balanced_tree()", tests, 3, test_report);
+}
+
 int main(void)
 {
-  TestSuite_Func test_suites[] = {test_search, test_remove_node, test_rotate_left, test_rotate_right, test_rotate};
-  TestReport_ptr test_report = runt_test_suites(test_suites, 5);
+  TestSuite_Func test_suites[] = {test_search,
+                                  test_remove_node,
+                                  test_rotate_left,
+                                  test_rotate_right,
+                                  test_rotate,
+                                  test_get_balanced_tree};
+  TestReport_ptr test_report = runt_test_suites(test_suites, 6);
   display_report(test_report);
 }
