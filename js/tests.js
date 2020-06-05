@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { insert, search, remove } = require('./bst');
+const { insert, search, remove, rotateLeft } = require('./bst');
 
 describe('search()', function () {
   it('should return null value not in bst', function () {
@@ -46,6 +46,29 @@ describe('search()', function () {
     let root = [10, 20, 5, 8, 1, 25].reduce(insert, null);
     root = remove(root, 20);
     const exp_root = [10, 25, 5, 8, 1].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('rotateLeft()', function () {
+  it('should rotate left', function () {
+    let root = [10, 20, 5, 15, 25].reduce(insert, null);
+    root = rotateLeft(root, 20);
+    const exp_root = [20, 10, 25, 5, 15].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should not rotate left if root does not have any right child node', function () {
+    let root = [10, 5].reduce(insert, null);
+    root = rotateLeft(root, 20);
+    const exp_root = [10, 5].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate left if root has leaf node as right child node', function () {
+    let root = [10, 5, 20].reduce(insert, null);
+    root = rotateLeft(root, 20);
+    const exp_root = [20, 10, 5].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 });
