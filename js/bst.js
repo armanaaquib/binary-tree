@@ -63,7 +63,7 @@ const remove = (root, value) => {
 };
 
 const rotateLeft = (root) => {
-  if (root == null || root.right == null) {
+  if (root === null || root.right === null) {
     return root;
   }
 
@@ -76,7 +76,7 @@ const rotateLeft = (root) => {
 };
 
 const rotateRight = (root) => {
-  if (root == null || root.left == null) {
+  if (root === null || root.left === null) {
     return root;
   }
 
@@ -89,12 +89,44 @@ const rotateRight = (root) => {
 };
 
 const rotate = (root, pivotNode) => {
-  if (root.right == pivotNode) {
+  if (root === null) {
+    return root;
+  }
+
+  if (root.right === pivotNode) {
     return rotateLeft(root);
   }
 
-  if (root.left == pivotNode) {
+  if (root.left === pivotNode) {
     return rotateRight(root);
+  }
+
+  return root;
+};
+
+const rotateByValue = (root, value) => {
+  let parentParent = null;
+  let parent = null;
+  let node = root;
+
+  while (node && node.value !== value) {
+    parentParent = parent;
+    parent = node;
+    node = value < node.value ? node.left : node.right;
+  }
+
+  if (node == null) {
+    return root;
+  }
+
+  if (parentParent == null) {
+    return rotate(parent, node);
+  }
+
+  if (parentParent.left === parent) {
+    parentParent.left = rotate(parent, node);
+  } else {
+    parentParent.right = rotate(parent, node);
   }
 
   return root;
@@ -114,19 +146,19 @@ const buildTree = (nodes, start, end) => {
   return node;
 };
 
-const storeNodes = (node, nodes) => {
+const storeNodes = (node, push_node) => {
   if (node == null) {
     return;
   }
 
-  storeNodes(node.left, nodes);
-  nodes.push(node);
-  storeNodes(node.right, nodes);
+  storeNodes(node.left, push_node);
+  push_node(node);
+  storeNodes(node.right, push_node);
 };
 
 const getBalancedTree = (root) => {
   const bstNodes = [];
-  storeNodes(root, bstNodes);
+  storeNodes(root, bstNodes.push.bind(bstNodes));
 
   return buildTree(bstNodes, 0, bstNodes.length - 1);
 };
@@ -139,4 +171,5 @@ module.exports = {
   rotateRight,
   rotate,
   getBalancedTree,
+  rotateByValue,
 };

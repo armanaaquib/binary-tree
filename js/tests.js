@@ -7,6 +7,7 @@ const {
   rotateRight,
   rotate,
   getBalancedTree,
+  rotateByValue,
 } = require('./bst');
 
 describe('search()', function () {
@@ -139,6 +140,36 @@ describe('getBalanceTree()', function () {
     let root = [4, 3, 5, 2, 6, 1, 7].reduce(insert, null);
     root = getBalancedTree(root, root.right);
     const exp_root = [4, 2, 6, 1, 3, 5, 7].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('rotate()', function () {
+  it('should rotate if value is left to root node', function () {
+    let root = [10, 20, 5, 1, 8].reduce(insert, null);
+    root = rotateByValue(root, 5);
+    const exp_root = [5, 1, 10, 8, 20].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate if value is right to root node', function () {
+    let root = [10, 20, 5, 15, 25].reduce(insert, null);
+    root = rotateByValue(root, 20);
+    const exp_root = [20, 10, 25, 5, 15].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate if value is right to sub tree root node', function () {
+    let root = [10, 20, 5, 15, 25].reduce(insert, null);
+    root = rotateByValue(root, 25);
+    const exp_root = [10, 5, 25, 20, 15].reduce(insert, null);
+    assert.deepStrictEqual(root, exp_root);
+  });
+
+  it('should rotate if value is left to sub tree root node', function () {
+    let root = [10, 20, 5, 15, 25].reduce(insert, null);
+    root = rotateByValue(root, 15);
+    const exp_root = [10, 5, 15, 20, 25].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
   });
 });
