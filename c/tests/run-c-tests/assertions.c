@@ -46,3 +46,15 @@ void assert_tree_equal(Node_ptr head_1, Node_ptr head_2, Matcher matcher, Test_p
   assert_tree_equal(head_1->left, head_2->left, matcher, test);
   assert_tree_equal(head_1->right, head_2->right, matcher, test);
 }
+
+void assert_int_equal(int actual, int expected, Test_ptr test)
+{
+  if (test->status == False)
+    return;
+
+  if (!(actual == expected))
+  {
+    test->status = False;
+    sprintf(test->error, "Expected %d Actual %d\n", expected, actual);
+  }
+}

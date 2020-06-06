@@ -45,6 +45,12 @@ Test_ptr should_rotate_if_value_is_right_to_root(Test_ptr);
 Test_ptr should_rotate_if_value_is_left_to_sub_tree_root(Test_ptr);
 Test_ptr should_rotate_if_value_is_right_to_sub_tree_root(Test_ptr);
 
+void test_find_depth(TestReport_ptr);
+Test_ptr should_return_1_if_root_has_not_any_child(Test_ptr);
+Test_ptr should_return_depth_if_both_child_has_same_depth(Test_ptr);
+Test_ptr should_return_depth_if_right_child_has_extra_depth(Test_ptr);
+Test_ptr should_return_depth_if_left_child_has_extra_depth(Test_ptr);
+
 int cmp_int(Value val_1, Value val_2)
 {
   return *(int *)val_1 - *(int *)val_2;
@@ -549,6 +555,64 @@ void test_rotate_by_value(TestReport_ptr test_report)
   run_tests("rotate_by_value()", tests, 4, test_report);
 }
 
+Test_ptr should_return_1_if_root_has_not_any_child(Test_ptr test)
+{
+  test->name = "should return 1 if root has no children";
+
+  int values[] = {10};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 1);
+
+  assert_int_equal(find_depth(root), 1, test);
+
+  return test;
+}
+
+Test_ptr should_return_depth_if_both_child_has_same_depth(Test_ptr test)
+{
+  test->name = "should return depth if both child has same depth";
+
+  int values[] = {10, 5, 1, 20, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  assert_int_equal(find_depth(root), 3, test);
+
+  return test;
+}
+
+Test_ptr should_return_depth_if_right_child_has_extra_depth(Test_ptr test)
+{
+  test->name = "should return depth if right child has more depth";
+
+  int values[] = {10, 20, 15, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 4);
+
+  assert_int_equal(find_depth(root), 3, test);
+
+  return test;
+}
+
+Test_ptr should_return_depth_if_left_child_has_extra_depth(Test_ptr test)
+{
+  test->name = "should return depth if left child has more depth";
+
+  int values[] = {10, 5, 2, 8};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 4);
+
+  assert_int_equal(find_depth(root), 3, test);
+
+  return test;
+}
+
+void test_find_depth(TestReport_ptr test_report)
+{
+  Test_Func tests[] = {should_return_1_if_root_has_not_any_child,
+                       should_return_depth_if_both_child_has_same_depth,
+                       should_return_depth_if_right_child_has_extra_depth,
+                       should_return_depth_if_left_child_has_extra_depth};
+
+  run_tests("find_depth()", tests, 4, test_report);
+}
+
 int main(void)
 {
   TestSuite_Func test_suites[] = {test_search,
@@ -557,7 +621,8 @@ int main(void)
                                   test_rotate_right,
                                   test_rotate,
                                   test_get_balanced_tree,
-                                  test_rotate_by_value};
-  TestReport_ptr test_report = runt_test_suites(test_suites, 7);
+                                  test_rotate_by_value,
+                                  test_find_depth};
+  TestReport_ptr test_report = runt_test_suites(test_suites, 8);
   display_report(test_report);
 }

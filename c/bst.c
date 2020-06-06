@@ -5,6 +5,7 @@ Node_ptr create_node(Value value);
 int store_values(Node_ptr node, Value values[], int);
 Node_ptr build_tree(Node_ptr, Value[], int, int);
 int compare_int(Value, Value);
+int max_int(int, int);
 
 Node_ptr create_node(Value value)
 {
@@ -117,7 +118,7 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
   free(node_to_free);
 
   return root;
-};
+}
 
 Node_ptr rotate_left(Node_ptr root)
 {
@@ -193,7 +194,7 @@ Node_ptr rotate_by_value(Node_ptr root, Value value, Matcher matcher)
   }
 
   return root;
-};
+}
 
 int compare_int(Value val_1, Value val_2)
 {
@@ -216,7 +217,7 @@ Node_ptr build_tree(Node_ptr node, Value values[], int start, int end)
   node = build_tree(node, values, mid + 1, end);
 
   return node;
-};
+}
 
 int store_values(Node_ptr node, Value values[], int i)
 {
@@ -230,7 +231,7 @@ int store_values(Node_ptr node, Value values[], int i)
   i = store_values(node->right, values, i);
 
   return i;
-};
+}
 
 Node_ptr get_balanced_tree(Node_ptr root)
 {
@@ -238,4 +239,19 @@ Node_ptr get_balanced_tree(Node_ptr root)
   int no_of_nodes = store_values(root, values, 0);
 
   return build_tree(NULL, values, 0, no_of_nodes - 1);
-};
+}
+
+int max_int(int int_1, int int_2)
+{
+  return int_1 > int_2 ? int_1 : int_2;
+}
+
+int find_depth(Node_ptr root)
+{
+  if (root == NULL)
+  {
+    return 0;
+  }
+
+  return 1 + max_int(find_depth(root->left), find_depth(root->right));
+}
