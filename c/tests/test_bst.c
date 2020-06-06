@@ -39,6 +39,12 @@ Test_ptr should_balance_even_extra_depth_tree(Test_ptr);
 Test_ptr should_balance_odd_extra_depth_tree(Test_ptr);
 Test_ptr should_balance_all_nodes(Test_ptr);
 
+void test_rotate_by_value(TestReport_ptr);
+Test_ptr should_rotate_if_value_is_left_to_root(Test_ptr);
+Test_ptr should_rotate_if_value_is_right_to_root(Test_ptr);
+Test_ptr should_rotate_if_value_is_left_to_sub_tree_root(Test_ptr);
+Test_ptr should_rotate_if_value_is_right_to_sub_tree_root(Test_ptr);
+
 int cmp_int(Value val_1, Value val_2)
 {
   return *(int *)val_1 - *(int *)val_2;
@@ -461,6 +467,88 @@ void test_get_balanced_tree(TestReport_ptr test_report)
   run_tests("get_balanced_tree()", tests, 3, test_report);
 }
 
+Test_ptr should_rotate_if_value_is_left_to_root(Test_ptr test)
+{
+  test->name = "should rotate if value is left to root node";
+
+  int values[] = {10, 20, 5, 1, 8};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  int exp_values[] = {5, 1, 10, 8, 20};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 5);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 5;
+  root = rotate_by_value(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_rotate_if_value_is_right_to_root(Test_ptr test)
+{
+  test->name = "should rotate if value is right to root node";
+
+  int values[] = {10, 20, 5, 15, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  int exp_values[] = {20, 10, 25, 5, 15};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 5);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 20;
+  root = rotate_by_value(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_rotate_if_value_is_left_to_sub_tree_root(Test_ptr test)
+{
+  test->name = "should rotate if value is left to sub tree root node";
+
+  int values[] = {10, 20, 5, 15, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  int exp_values[] = {10, 5, 15, 20, 25};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 5);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 15;
+  root = rotate_by_value(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+Test_ptr should_rotate_if_value_is_right_to_sub_tree_root(Test_ptr test)
+{
+  test->name = "should rotate if value is right to sub tree root node";
+
+  int values[] = {10, 20, 5, 15, 25};
+  Node_ptr root = reduce_ints_to_root(insert, NULL, cmp_int, values, 5);
+
+  int exp_values[] = {10, 5, 25, 20, 15};
+  Node_ptr exp_root = reduce_ints_to_root(insert, NULL, cmp_int, exp_values, 5);
+
+  Value value = malloc(sizeof(Value));
+  *(int *)value = 25;
+  root = rotate_by_value(root, value, cmp_int);
+  assert_tree_equal(root, exp_root, cmp_int, test);
+
+  return test;
+}
+
+void test_rotate_by_value(TestReport_ptr test_report)
+{
+  Test_Func tests[] = {should_rotate_if_value_is_left_to_root,
+                       should_rotate_if_value_is_right_to_root,
+                       should_rotate_if_value_is_left_to_sub_tree_root,
+                       should_rotate_if_value_is_right_to_sub_tree_root};
+
+  run_tests("rotate_by_value()", tests, 4, test_report);
+}
+
 int main(void)
 {
   TestSuite_Func test_suites[] = {test_search,
@@ -468,7 +556,8 @@ int main(void)
                                   test_rotate_left,
                                   test_rotate_right,
                                   test_rotate,
-                                  test_get_balanced_tree};
-  TestReport_ptr test_report = runt_test_suites(test_suites, 6);
+                                  test_get_balanced_tree,
+                                  test_rotate_by_value};
+  TestReport_ptr test_report = runt_test_suites(test_suites, 7);
   display_report(test_report);
 }

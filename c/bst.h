@@ -10,6 +10,7 @@ Node_ptr remove_node(Node_ptr, Value, Matcher);
 Node_ptr rotate_left(Node_ptr);
 Node_ptr rotate_right(Node_ptr);
 Node_ptr rotate(Node_ptr, Node_ptr);
+Node_ptr rotate_by_value(Node_ptr, Value, Matcher);
 Node_ptr get_balanced_tree(Node_ptr);
 
 #endif

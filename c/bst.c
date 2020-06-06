@@ -166,6 +166,11 @@ Node_ptr rotate_right(Node_ptr root)
 
 Node_ptr rotate(Node_ptr root, Node_ptr pivot_node)
 {
+  if (root == NULL)
+  {
+    return root;
+  }
+
   if (root->right == pivot_node)
   {
     return rotate_left(root);
@@ -178,6 +183,30 @@ Node_ptr rotate(Node_ptr root, Node_ptr pivot_node)
 
   return root;
 }
+
+Node_ptr rotate_by_value(Node_ptr root, Value value, Matcher matcher)
+{
+  Node_ptr *parent = NULL;
+  Node_ptr *node = &root;
+
+  while (*node && (*matcher)(value, (*node)->value) != 0)
+  {
+    parent = &(*node);
+    node = (*matcher)(value, (*node)->value) < 0 ? &(*node)->left : &(*node)->right;
+  }
+
+  if (*node == NULL)
+  {
+    return root;
+  }
+
+  if (*parent)
+  {
+    *parent = rotate(*parent, *node);
+  }
+
+  return root;
+};
 
 int compare_int(Value val_1, Value val_2)
 {
