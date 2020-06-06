@@ -163,6 +163,14 @@ const getBalancedTree = (root) => {
   return buildTree(bstNodes, 0, bstNodes.length - 1);
 };
 
+const findDepth = (root) => {
+  if (root == null) {
+    return 0;
+  }
+
+  return 1 + Math.max(findDepth(root.left), findDepth(root.right));
+};
+
 module.exports = {
   insert,
   search,
@@ -172,4 +180,5 @@ module.exports = {
   rotate,
   getBalancedTree,
   rotateByValue,
+  findDepth,
 };

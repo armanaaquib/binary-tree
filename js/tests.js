@@ -8,6 +8,7 @@ const {
   rotate,
   getBalancedTree,
   rotateByValue,
+  findDepth,
 } = require('./bst');
 
 describe('search()', function () {
@@ -144,7 +145,7 @@ describe('getBalanceTree()', function () {
   });
 });
 
-describe('rotate()', function () {
+describe('rotateByVAlue()', function () {
   it('should rotate if value is left to root node', function () {
     let root = [10, 20, 5, 1, 8].reduce(insert, null);
     root = rotateByValue(root, 5);
@@ -171,5 +172,32 @@ describe('rotate()', function () {
     root = rotateByValue(root, 15);
     const exp_root = [10, 5, 15, 20, 25].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('findDepth()', function () {
+  it('should return 0 if tree is null', function () {
+    const root = [].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 0);
+  });
+
+  it('should return 1 if root has no children', function () {
+    const root = [10].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 1);
+  });
+
+  it('should return depth if both child has same depth', function () {
+    const root = [10, 5, 1, 20, 25].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
+  });
+
+  it('should return depth if right child has more depth', function () {
+    const root = [10, 20, 15, 25].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
+  });
+
+  it('should return depth if left child has more depth', function () {
+    const root = [10, 5, 2, 8].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
   });
 });
