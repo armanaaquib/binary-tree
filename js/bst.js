@@ -52,7 +52,7 @@ const remove = (root, value) => {
   }
 
   let minValueNode = root.right;
-  while (minValueNode.left != null) {
+  while (minValueNode.left) {
     minValueNode = minValueNode.left;
   }
 

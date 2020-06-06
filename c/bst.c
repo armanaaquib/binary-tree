@@ -42,14 +42,9 @@ Node_ptr insert(Node_ptr root, Value value, Matcher matcher)
 
   while (*p_walk != NULL)
   {
-    if ((*matcher)(value, (*p_walk)->value) < 0)
-    {
-      p_walk = &((*p_walk)->left);
-    }
-    else
-    {
-      p_walk = &((*p_walk)->right);
-    }
+    p_walk = (*matcher)(value, (*p_walk)->value) < 0
+                 ? &(*p_walk)->left
+                 : &(*p_walk)->right;
   }
 
   *p_walk = create_node(value);
@@ -68,14 +63,9 @@ Node_ptr search(Node_ptr head, Value searchValue, Matcher matcher)
       return p_walk;
     }
 
-    if ((*matcher)(searchValue, p_walk->value) < 0)
-    {
-      p_walk = p_walk->left;
-    }
-    else
-    {
-      p_walk = p_walk->right;
-    }
+    p_walk = (*matcher)(searchValue, p_walk->value) < 0
+                 ? p_walk->left
+                 : p_walk->right;
   }
 
   return p_walk;
@@ -87,14 +77,9 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
 
   while (*current && (*matcher)(value, (*current)->value) != 0)
   {
-    if ((*matcher)(value, (*current)->value) < 0)
-    {
-      current = &((*current)->left);
-    }
-    else
-    {
-      current = &((*current)->right);
-    }
+    current = (*matcher)(value, (*current)->value) < 0
+                  ? &(*current)->left
+                  : &(*current)->right;
   }
 
   if (*current == NULL)
@@ -136,7 +121,7 @@ Node_ptr remove_node(Node_ptr root, Value value, Matcher matcher)
 
 Node_ptr rotate_left(Node_ptr root)
 {
-  if (root == NULL || root->right == NULL)
+  if (!root || !root->right)
   {
     return root;
   }
@@ -151,7 +136,7 @@ Node_ptr rotate_left(Node_ptr root)
 
 Node_ptr rotate_right(Node_ptr root)
 {
-  if (root == NULL || root->left == NULL)
+  if (!root || !root->left)
   {
     return root;
   }
@@ -166,7 +151,7 @@ Node_ptr rotate_right(Node_ptr root)
 
 Node_ptr rotate(Node_ptr root, Node_ptr pivot_node)
 {
-  if (root == NULL)
+  if (!root)
   {
     return root;
   }
@@ -192,7 +177,9 @@ Node_ptr rotate_by_value(Node_ptr root, Value value, Matcher matcher)
   while (*node && (*matcher)(value, (*node)->value) != 0)
   {
     parent = &(*node);
-    node = (*matcher)(value, (*node)->value) < 0 ? &(*node)->left : &(*node)->right;
+    node = (*matcher)(value, (*node)->value) < 0
+               ? &(*node)->left
+               : &(*node)->right;
   }
 
   if (*node == NULL)
@@ -233,7 +220,7 @@ Node_ptr build_tree(Node_ptr node, Value values[], int start, int end)
 
 int store_values(Node_ptr node, Value values[], int i)
 {
-  if (node == NULL)
+  if (!node)
   {
     return i;
   }
