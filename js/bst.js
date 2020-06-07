@@ -164,11 +164,45 @@ const getBalancedTree = (root) => {
 };
 
 const findDepth = (root) => {
-  if (root == null) {
+  if (root === null) {
     return 0;
   }
 
   return 1 + Math.max(findDepth(root.left), findDepth(root.right));
+};
+
+const isBalanced = (root) => {
+  if (root == null) {
+    return true;
+  }
+
+  return (
+    Math.abs(findDepth(root.left) - findDepth(root.right)) <= 1 &&
+    isBalanced(root.left) &&
+    isBalanced(root.right)
+  );
+};
+
+const balance = (root) => {
+  if (isBalanced(root)) {
+    return root;
+  }
+
+  const nodes = [];
+  storeNodes(root, nodes.push.bind(nodes));
+
+  const mid = Math.floor((nodes.length - 1) / 2);
+
+  const balancedBstRoot = nodes[mid];
+
+  while (root != balancedBstRoot) {
+    root = rotateByValue(root, balancedBstRoot.value);
+  }
+
+  root.left = balance(root.left);
+  root.right = balance(root.right);
+
+  return root;
 };
 
 module.exports = {
@@ -181,4 +215,6 @@ module.exports = {
   getBalancedTree,
   rotateByValue,
   findDepth,
+  isBalanced,
+  balance,
 };
