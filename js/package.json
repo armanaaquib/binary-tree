@@ -1,0 +1,16 @@
+{
+  "name": "bst",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "nyc mocha",
+    "start": "node main.js"
+  },
+  "author": "Aaquib Equbal",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "7.2.0",
+    "nyc": "15.1.0"
+  }
+}
