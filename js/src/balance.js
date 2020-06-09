@@ -39,13 +39,17 @@ const findDepth = (root) => {
   return 1 + Math.max(findDepth(root.left), findDepth(root.right));
 };
 
+const find_balance_factor = (root) =>
+  findDepth(root.right) - findDepth(root.left);
+
 const isBalanced = (root) => {
   if (root == null) {
     return true;
   }
 
+  const balance_factor = find_balance_factor(root);
   return (
-    Math.abs(findDepth(root.left) - findDepth(root.right)) <= 1 &&
+    Math.abs(balance_factor) <= 1 &&
     isBalanced(root.left) &&
     isBalanced(root.right)
   );
@@ -63,7 +67,7 @@ const balance = (root) => {
 
   const balancedBstRoot = nodes[mid];
 
-  while (root != balancedBstRoot) {
+  while (root !== balancedBstRoot) {
     root = rotateByValue(root, balancedBstRoot.value);
   }
 
