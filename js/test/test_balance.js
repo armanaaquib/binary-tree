@@ -1,11 +1,6 @@
 const assert = require('assert');
 const { insert } = require('../src/bst');
-const {
-  getBalancedTree,
-  findDepth,
-  isBalanced,
-  balance,
-} = require('../src/balance');
+const { getBalancedTree, isBalanced, balance } = require('../src/balance');
 
 describe('getBalanceTree()', function () {
   it('should balance if left depth is even and right depth is 0', function () {
@@ -27,33 +22,6 @@ describe('getBalanceTree()', function () {
     root = getBalancedTree(root, root.right);
     const exp_root = [4, 2, 6, 1, 3, 5, 7].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
-  });
-});
-
-describe('findDepth()', function () {
-  it('should return 0 if tree is null', function () {
-    const root = [].reduce(insert, null);
-    assert.strictEqual(findDepth(root), 0);
-  });
-
-  it('should return 1 if root has no children', function () {
-    const root = [10].reduce(insert, null);
-    assert.strictEqual(findDepth(root), 1);
-  });
-
-  it('should return depth if both child has same depth', function () {
-    const root = [10, 5, 1, 20, 25].reduce(insert, null);
-    assert.strictEqual(findDepth(root), 3);
-  });
-
-  it('should return depth if right child has more depth', function () {
-    const root = [10, 20, 15, 25].reduce(insert, null);
-    assert.strictEqual(findDepth(root), 3);
-  });
-
-  it('should return depth if left child has more depth', function () {
-    const root = [10, 5, 2, 8].reduce(insert, null);
-    assert.strictEqual(findDepth(root), 3);
   });
 });
 

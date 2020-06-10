@@ -1,4 +1,5 @@
 const { rotateByValue } = require('./rotations');
+const { find_balance_factor } = require('./bst');
 
 const buildTree = (nodes, start, end) => {
   if (start > end) {
@@ -30,17 +31,6 @@ const getBalancedTree = (root) => {
 
   return buildTree(bstNodes, 0, bstNodes.length - 1);
 };
-
-const findDepth = (root) => {
-  if (root === null) {
-    return 0;
-  }
-
-  return 1 + Math.max(findDepth(root.left), findDepth(root.right));
-};
-
-const find_balance_factor = (root) =>
-  findDepth(root.right) - findDepth(root.left);
 
 const isBalanced = (root) => {
   if (root == null) {
@@ -77,4 +67,4 @@ const balance = (root) => {
   return root;
 };
 
-module.exports = { getBalancedTree, findDepth, isBalanced, balance };
+module.exports = { getBalancedTree, isBalanced, balance };

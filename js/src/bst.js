@@ -62,4 +62,15 @@ const remove = (root, value) => {
   return root;
 };
 
-module.exports = { insert, search, remove };
+const findDepth = (root) => {
+  if (root === null) {
+    return 0;
+  }
+
+  return 1 + Math.max(findDepth(root.left), findDepth(root.right));
+};
+
+const find_balance_factor = (root) =>
+  findDepth(root.left) - findDepth(root.right);
+
+module.exports = { insert, search, remove, findDepth, find_balance_factor };

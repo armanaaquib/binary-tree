@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { insert, search, remove } = require('../src/bst');
+const { insert, search, remove, findDepth } = require('../src/bst');
 
 describe('search()', function () {
   it('should return null value not in bst', function () {
@@ -59,5 +59,32 @@ describe('remove()', function () {
     root = remove(root, 5);
     const exp_root = [10, 20, 1, 25].reduce(insert, null);
     assert.deepStrictEqual(root, exp_root);
+  });
+});
+
+describe('findDepth()', function () {
+  it('should return 0 if tree is null', function () {
+    const root = [].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 0);
+  });
+
+  it('should return 1 if root has no children', function () {
+    const root = [10].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 1);
+  });
+
+  it('should return depth if both child has same depth', function () {
+    const root = [10, 5, 1, 20, 25].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
+  });
+
+  it('should return depth if right child has more depth', function () {
+    const root = [10, 20, 15, 25].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
+  });
+
+  it('should return depth if left child has more depth', function () {
+    const root = [10, 5, 2, 8].reduce(insert, null);
+    assert.strictEqual(findDepth(root), 3);
   });
 });
