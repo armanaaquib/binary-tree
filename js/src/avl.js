@@ -39,4 +39,54 @@ const insertAVL = (root, value) => {
   return root;
 };
 
-module.exports = { insertAVL };
+const removeAVL = (root, value) => {
+  if (root == null) {
+    return root;
+  }
+
+  if (value < root.value) {
+    root.left = removeAVL(root.left, value);
+  } else if (value > root.value) {
+    root.right = removeAVL(root.right, value);
+  } else {
+    if (root.left == null) {
+      return root.right;
+    }
+
+    if (root.right == null) {
+      return root.left;
+    }
+
+    let minValueNode = root.right;
+    while (minValueNode.left) {
+      minValueNode = minValueNode.left;
+    }
+
+    root.value = minValueNode.value;
+    root.right = removeAVL(root.right, minValueNode.value);
+  }
+
+  const balance_factor = find_balance_factor(root);
+
+  if (balance_factor > 1 && find_balance_factor(root.left) >= 0) {
+    return rotateRight(root);
+  }
+
+  if (balance_factor > 1 && find_balance_factor(root.left) < 0) {
+    root.left = rotateLeft(root.left);
+    return rotateRight(root);
+  }
+
+  if (balance_factor < -1 && find_balance_factor(root.right) <= 0) {
+    return rotateLeft(root);
+  }
+
+  if (balance_factor < -1 && find_balance_factor(root.right) > 0) {
+    root.right = rotateRight(root.right);
+    return rotateLeft(root);
+  }
+
+  return root;
+};
+
+module.exports = { insertAVL, removeAVL };
