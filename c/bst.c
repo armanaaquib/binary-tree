@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "bst.h"
 
 Node_ptr create_node(Value value);
@@ -233,14 +234,6 @@ int store_values(Node_ptr node, Value values[], int i)
   return i;
 }
 
-Node_ptr get_balanced_tree(Node_ptr root)
-{
-  Value values[128];
-  int no_of_nodes = store_values(root, values, 0);
-
-  return build_tree(NULL, values, 0, no_of_nodes - 1);
-}
-
 int max_int(int int_1, int int_2)
 {
   return int_1 > int_2 ? int_1 : int_2;
@@ -254,4 +247,13 @@ int find_depth(Node_ptr root)
   }
 
   return 1 + max_int(find_depth(root->left), find_depth(root->right));
+}
+
+Node_ptr get_balanced_tree(Node_ptr root)
+{
+  int no_of_values = pow(2, find_depth(root) - 1);
+  Value values[no_of_values];
+  no_of_values = store_values(root, values, 0);
+
+  return build_tree(NULL, values, 0, no_of_values - 1);
 }
